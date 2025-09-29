@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<martifact:definitions xmlns:martifact="http://foo.bar.it/martifact" id="Definitions_1">
+    <martifact:localArtifact name="Container" id="c1" externalCep="true" />
+    <martifact:mapping>
+        <martifact:artifact name="Truck">
+            <martifact:bindingEvent id="process_started" />
+            <martifact:unbindingEvent id="process_ended" />
+        </martifact:artifact>
+    </martifact:mapping>
+    <martifact:stakeholder name="Shipper" processInstance="s1">
+</martifact:stakeholder>
+</martifact:definitions>

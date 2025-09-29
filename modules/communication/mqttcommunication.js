@@ -167,6 +167,21 @@ function onMessageReceived(hostname, port, topic, message) {
                 }
                 break;
             }
+            case 'GET_DEVIATION_AGGREGATORS_RESP': {
+                LOG.logSystem('DEBUG', `GET_DEVIATION_AGGREGATORS_RESP message received, request_id: [${msgJson['request_id']}]`, module.id)
+                if (REQUEST_PROMISES.has(msgJson['request_id'])) {
+                    REQUEST_PROMISES.get(msgJson['request_id'])(msgJson['payload'])
+                    REQUEST_PROMISES.delete(msgJson['request_id'])
+                }
+                break;
+            }
+            case 'GET_COMPLETE_JOB_DATA_RESPONSE': {
+                LOG.logSystem('DEBUG', `GET_DEVIATION_AGGREGATORS_RESP message received, request_id: [${msgJson['request_id']}]`, module.id)
+                if (REQUEST_PROMISES.has(msgJson['request_id'])) {
+                    REQUEST_PROMISES.get(msgJson['request_id'])(msgJson['payload'])
+                    REQUEST_PROMISES.delete(msgJson['request_id'])
+                }
+            }
         }
     }
     else if (NOTIFICATION_TOPICS.has(topic)) {
@@ -178,14 +193,14 @@ function onMessageReceived(hostname, port, topic, message) {
  * Inits MQTT broker connection and subscribes to the necessary topics to start operation
  * @param {Broker} broker Broker the supervisor should use to reach out to the managed workers and aggregators
  */
-function initBrokerConnection(broker) {
+async function initBrokerConnection(broker) {
     BROKER = broker
     LOG.logSystem('DEBUG', `initBrokerConnection function called`, module.id)
 
     MQTT.init(onMessageReceived)
     MQTT.createConnection(BROKER.host, BROKER.port, BROKER.username, BROKER.password)
-    MQTT.subscribeTopic(BROKER.host, BROKER.port, WORKERS_TO_SUPERVISOR)
-    MQTT.subscribeTopic(BROKER.host, BROKER.port, AGGREGATORS_TO_SUPERVISOR)
+    await MQTT.subscribeTopic(BROKER.host, BROKER.port, WORKERS_TO_SUPERVISOR)
+    await MQTT.subscribeTopic(BROKER.host, BROKER.port, AGGREGATORS_TO_SUPERVISOR)
 
     LOG.logSystem('DEBUG', `initBrokerConnection function ran successfully`, module.id)
 }
@@ -508,8 +523,6 @@ function getEngineCompleteNodeDiagram(engineid) {
     return promise
 }
 
-
-
 // Aggregator-related functions
 /**
  * Creates a new Monitoring activity on a specified Aggregator
@@ -672,6 +685,50 @@ async function searchForJob(jobid) {
 }
 
 /**
+ * Get jobs from a specific aggregator
+ * @returns Promise containing array of aggregators
+ */
+async function getDeviationAggregators() {
+    LOG.logSystem('DEBUG', `Searching for all deviation aggregators`, module.id)
+    var request_id = UUID.v4();
+    var message = {
+        "request_id": request_id,
+        "message_type": 'GET_DEVIATION_AGGREGATORS',
+    }
+    MQTT.publishTopic(BROKER.host, BROKER.port, SUPERVISOR_TO_AGGREGATORS, JSON.stringify(message))
+    var promise = new Promise(function (resolve, reject) {
+        REQUEST_PROMISES.set(request_id, resolve)
+        wait(ENGINE_SEARCH_WAITING_PERIOD).then(() => {
+            resolve('not_found')
+        })
+    });
+    return promise
+}
+
+/**
+ * Get complete job data including aggregated results
+ * @param {string} jobId Job ID to retrieve
+ * @returns Promise containing complete job data
+ */
+async function getJobCompleteData(jobId) {
+    LOG.logSystem('DEBUG', `Retrieving aggregated data for for Job [${jobId}]`, module.id)
+    var request_id = UUID.v4();
+    var message = {
+        "request_id": request_id,
+        "message_type": 'GET_COMPLETE_JOB_DATA',
+        job_id: jobId,
+    }
+    MQTT.publishTopic(BROKER.host, BROKER.port, SUPERVISOR_TO_AGGREGATORS, JSON.stringify(message))
+    var promise = new Promise(function (resolve, reject) {
+        REQUEST_PROMISES.set(request_id, resolve)
+        wait(ENGINE_SEARCH_WAITING_PERIOD).then(() => {
+            resolve('not_found')
+        })
+    });
+    return promise
+}
+
+/**
  * Can be used to subscribe to a defined MQTT topic
  * In case of a new message from the topic a new event will be emitted by the EVENT_EMITTER
  * Subscription to the same topic can be performed multiple times, in this case intead of multiply subscription
@@ -680,7 +737,7 @@ async function searchForJob(jobid) {
  */
 async function subscribeNotificationTopic(topic) {
     if (!NOTIFICATION_TOPICS.has(topic)) {
-        MQTT.subscribeTopic(BROKER.host, BROKER.port, topic)
+        await MQTT.subscribeTopic(BROKER.host, BROKER.port, topic)
         NOTIFICATION_TOPICS.set(topic, 1)
     }
     else {
@@ -706,6 +763,24 @@ async function unsubscribeNotificationTopic(topic) {
     }
 }
 
+/**
+ * Emit process instance creation notification to all aggregators
+ * @param {String} processType Process type of the new instance
+ * @param {String} instanceId Instance ID of the new instance
+ */
+async function emitProcessInstanceCreation(processType, instanceId) {
+    LOG.logSystem('DEBUG', `Emitting process instance creation: ${processType}/${instanceId}`, module.id)
+    const newInstanceMessage = {
+        request_id: UUID.v4(),
+        message_type: 'NEW_PROCESS_INSTANCE',
+        payload: {
+            "process_type": processType,
+            "process_id": instanceId
+        }
+    }
+
+    MQTT.publishTopic(BROKER.host, BROKER.port, SUPERVISOR_TO_AGGREGATORS, JSON.stringify(newInstanceMessage))
+}
 
 module.exports = {
     EVENT_EMITTER: EVENT_EMITTER,
@@ -719,6 +794,7 @@ module.exports = {
     getWorkerEngineList: getWorkerEngineList,
     getEngineCompleteDiagram: getEngineCompleteDiagram,
     getEngineCompleteNodeDiagram: getEngineCompleteNodeDiagram,
+    emitProcessInstanceCreation: emitProcessInstanceCreation,
 
     createNewMonitoringActivity: createNewMonitoringActivity,
     getAggregatorList: getAggregatorList,
@@ -729,4 +805,6 @@ module.exports = {
     subscribeNotificationTopic: subscribeNotificationTopic,
     unsubscribeNotificationTopic: unsubscribeNotificationTopic,
 
+    getDeviationAggregators: getDeviationAggregators,
+    getJobCompleteData: getJobCompleteData,
 }

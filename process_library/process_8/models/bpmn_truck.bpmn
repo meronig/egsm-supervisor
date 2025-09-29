@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- origin at X=0.0 Y=0.0 -->
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
   xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
   xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
   xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ext="http://org.eclipse.bpmn2/ext"
   xmlns:xs="http://www.w3.org/2001/XMLSchema" id="Definitions_1"
-  exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.5.4.RC1-v20220528-0836-B1"
-  targetNamespace="http://org.eclipse.bpmn2/default/process">
-  <bpmn2:process id="example" name="Default Process" isExecutable="false">
+  targetNamespace="http://org.eclipse.bpmn2/default/process"
+  exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.6.1">
+  <bpmn2:process id="shipment_AMS-LHR" name="Default Process" isExecutable="false">
     <bpmn2:startEvent id="process_started" name="process started">
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
       <bpmn2:dataOutput id="DataOutput_3" name="output1" />
@@ -19,7 +18,7 @@
     </bpmn2:startEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="process_started" targetRef="LoadContainer" />
     <bpmn2:endEvent id="process_ended" name="process ended">
-      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
       <bpmn2:dataInput id="DataInput_3" name="input1" />
       <bpmn2:inputSet id="InputSet_10" name="Input Set 10">
         <bpmn2:dataInputRefs>DataInput_3</bpmn2:dataInputRefs>
@@ -64,19 +63,17 @@
       <bpmn2:ioSpecification id="InputOutputSpecification_9">
         <bpmn2:dataInput id="DataInput_5" name="input1" />
         <bpmn2:dataOutput id="DataOutput_5" name="output1" />
-        <bpmn2:dataOutput id="DataOutput_6" name="output2" />
         <bpmn2:inputSet id="InputSet_9" name="Input Set 9">
           <bpmn2:dataInputRefs>DataInput_5</bpmn2:dataInputRefs>
         </bpmn2:inputSet>
         <bpmn2:outputSet id="OutputSet_9" name="Output Set 9">
           <bpmn2:dataOutputRefs>DataOutput_5</bpmn2:dataOutputRefs>
-          <bpmn2:dataOutputRefs>DataOutput_6</bpmn2:dataOutputRefs>
         </bpmn2:outputSet>
       </bpmn2:ioSpecification>
     </bpmn2:task>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_1" gatewayDirection="Converging">
-      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_2" gatewayDirection="Diverging">
@@ -84,14 +81,16 @@
       <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
       <bpmn2:outgoing>SequenceFlow_13</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
-    <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="LoadContainer" targetRef="ExclusiveGateway_1" />
+    <bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="LoadContainer"
+      targetRef="ExclusiveGateway_7" />
     <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="ExclusiveGateway_1" targetRef="TravelUK" />
     <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="TravelUK" targetRef="ExclusiveGateway_2" />
     <bpmn2:sequenceFlow id="SequenceFlow_6" sourceRef="ExclusiveGateway_8" targetRef="TakeBreakEU" />
     <bpmn2:sequenceFlow id="SequenceFlow_7" sourceRef="TakeBreakUK" targetRef="ExclusiveGateway_1" />
-    <bpmn2:sequenceFlow id="SequenceFlow_9" sourceRef="ExclusiveGateway_8" targetRef="process_ended" />
+    <bpmn2:sequenceFlow id="SequenceFlow_9" sourceRef="ExclusiveGateway_8"
+      targetRef="TakeChannelTunnel" />
     <bpmn2:task id="TakeChannelTunnel" name="Take Channel tunnel">
-      <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
       <bpmn2:ioSpecification id="InputOutputSpecification_15">
         <bpmn2:dataInput id="DataInput_12" name="input1" />
@@ -111,10 +110,12 @@
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
       <bpmn2:ioSpecification id="InputOutputSpecification_14">
         <bpmn2:dataInput id="DataInput_13" name="input1" />
+        <bpmn2:dataInput id="DataInput_6" name="input2" />
         <bpmn2:dataOutput id="DataOutput_12" name="output1" />
         <bpmn2:dataOutput id="DataOutput_15" name="output2" />
         <bpmn2:inputSet id="InputSet_15" name="Input Set 15">
           <bpmn2:dataInputRefs>DataInput_13</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_6</bpmn2:dataInputRefs>
         </bpmn2:inputSet>
         <bpmn2:outputSet id="OutputSet_15" name="Output Set 15">
           <bpmn2:dataOutputRefs>DataOutput_12</bpmn2:dataOutputRefs>
@@ -138,7 +139,7 @@
     </bpmn2:task>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_7" gatewayDirection="Converging">
       <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
-      <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_8" gatewayDirection="Diverging">
@@ -150,175 +151,179 @@
     <bpmn2:sequenceFlow id="SequenceFlow_8" sourceRef="TakeBreakEU" targetRef="ExclusiveGateway_7" />
     <bpmn2:sequenceFlow id="SequenceFlow_10" sourceRef="ExclusiveGateway_7" targetRef="TravelEU" />
     <bpmn2:sequenceFlow id="SequenceFlow_11" sourceRef="TakeChannelTunnel"
-      targetRef="ExclusiveGateway_7" />
+      targetRef="ExclusiveGateway_1" />
     <bpmn2:sequenceFlow id="SequenceFlow_12" sourceRef="ExclusiveGateway_2"
-      targetRef="TakeChannelTunnel" />
+      targetRef="process_ended" />
     <bpmn2:sequenceFlow id="SequenceFlow_13" sourceRef="ExclusiveGateway_2" targetRef="TakeBreakUK" />
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="example">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="shipment_AMS-LHR">
       <bpmndi:BPMNShape id="BPMNShape_1" bpmnElement="process_started">
-        <dc:Bounds height="36.0" width="36.0" x="88.0" y="263.0" />
+        <dc:Bounds x="192" y="202" width="36" height="36" />
         <bpmndi:BPMNLabel id="BPMNLabel_1" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="34.0" width="59.0" x="77.0" y="299.0" />
+          <dc:Bounds x="173" y="238" width="76" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_2" bpmnElement="process_ended">
-        <dc:Bounds height="36.0" width="36.0" x="1110.0" y="270.0" />
+        <dc:Bounds x="1262" y="202" width="36" height="36" />
         <bpmndi:BPMNLabel id="BPMNLabel_3" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="34.0" width="59.0" x="1099.0" y="306.0" />
+          <dc:Bounds x="1244" y="238" width="73" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_LoadContainer" bpmnElement="LoadContainer">
-        <dc:Bounds height="50.0" width="110.0" x="165.0" y="256.0" />
+        <dc:Bounds x="265" y="195" width="110" height="50" />
         <bpmndi:BPMNLabel id="BPMNLabel_4" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="17.0" width="96.0" x="172.0" y="272.0" />
+          <dc:Bounds x="304" y="211" width="32" height="17" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_TravelUK" bpmnElement="TravelUK">
-        <dc:Bounds height="50.0" width="110.0" x="380.0" y="175.0" />
+        <dc:Bounds x="975" y="115" width="110" height="50" />
         <bpmndi:BPMNLabel id="BPMNLabel_5" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="17.0" width="79.0" x="395.0" y="191.0" />
+          <dc:Bounds x="1002" y="131" width="55" height="17" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_TakeBreakUK" bpmnElement="TakeBreakUK">
-        <dc:Bounds height="50.0" width="110.0" x="380.0" y="320.0" />
+        <dc:Bounds x="975" y="278" width="110" height="50" />
         <bpmndi:BPMNLabel id="BPMNLabel_7" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="34.0" width="93.0" x="388.0" y="328.0" />
+          <dc:Bounds x="998" y="294" width="63" height="17" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1"
         isMarkerVisible="true">
-        <dc:Bounds height="50.0" width="50.0" x="305.0" y="256.0" />
+        <dc:Bounds x="895" y="195" width="50" height="50" />
         <bpmndi:BPMNLabel id="BPMNLabel_8" labelStyle="BPMNLabelStyle_1" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_2" bpmnElement="ExclusiveGateway_2"
         isMarkerVisible="true">
-        <dc:Bounds height="50.0" width="50.0" x="500.0" y="256.0" />
+        <dc:Bounds x="1125" y="195" width="50" height="50" />
         <bpmndi:BPMNLabel id="BPMNLabel_9" labelStyle="BPMNLabelStyle_1" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_TakeChannelTunnel" bpmnElement="TakeChannelTunnel"
         isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="590.0" y="256.0" />
+        <dc:Bounds x="725" y="195" width="110" height="50" />
         <bpmndi:BPMNLabel id="BPMNLabel_6" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="34.0" width="98.0" x="596.0" y="264.0" />
+          <dc:Bounds x="743" y="211" width="74" height="17" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_TravelEU" bpmnElement="TravelEU" isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="810.0" y="191.0" />
+        <dc:Bounds x="495" y="115" width="110" height="50" />
         <bpmndi:BPMNLabel id="BPMNLabel_13" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="17.0" width="79.0" x="825.0" y="207.0" />
+          <dc:Bounds x="523" y="131" width="54" height="17" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_TakeBreakEU" bpmnElement="TakeBreakEU" isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="833.0" y="328.0" />
+        <dc:Bounds x="495" y="278" width="110" height="50" />
         <bpmndi:BPMNLabel id="BPMNLabel_16" labelStyle="BPMNLabelStyle_1">
-          <dc:Bounds height="34.0" width="93.0" x="841.0" y="336.0" />
+          <dc:Bounds x="519" y="294" width="62" height="17" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_7" bpmnElement="ExclusiveGateway_7"
         isMarkerVisible="true">
-        <dc:Bounds height="50.0" width="50.0" x="740.0" y="256.0" />
+        <dc:Bounds x="415" y="195" width="50" height="50" />
         <bpmndi:BPMNLabel id="BPMNLabel_28" labelStyle="BPMNLabelStyle_1" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_8" bpmnElement="ExclusiveGateway_8"
         isMarkerVisible="true">
-        <dc:Bounds height="50.0" width="50.0" x="980.0" y="263.0" />
+        <dc:Bounds x="625" y="195" width="50" height="50" />
         <bpmndi:BPMNLabel id="BPMNLabel_35" labelStyle="BPMNLabelStyle_1" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1"
         sourceElement="BPMNShape_1" targetElement="BPMNShape_LoadContainer">
-        <di:waypoint xsi:type="dc:Point" x="124.0" y="281.0" />
-        <di:waypoint xsi:type="dc:Point" x="144.0" y="281.0" />
-        <di:waypoint xsi:type="dc:Point" x="165.0" y="281.0" />
-        <bpmndi:BPMNLabel id="BPMNLabel_2" labelStyle="BPMNLabelStyle_1" />
+        <di:waypoint x="228" y="220" />
+        <di:waypoint x="265" y="220" />
+        <bpmndi:BPMNLabel id="BPMNLabel_2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12"
+        sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_2">
+        <di:waypoint x="1175" y="220" />
+        <di:waypoint x="1262" y="220" />
+        <bpmndi:BPMNLabel id="BPMNLabel_40">
+          <dc:Bounds x="1544" y="281" width="89" height="40" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2"
-        sourceElement="BPMNShape_LoadContainer" targetElement="BPMNShape_ExclusiveGateway_1">
-        <di:waypoint xsi:type="dc:Point" x="275.0" y="281.0" />
-        <di:waypoint xsi:type="dc:Point" x="305.0" y="281.0" />
-        <bpmndi:BPMNLabel id="BPMNLabel_10" labelStyle="BPMNLabelStyle_1" />
+        sourceElement="BPMNShape_LoadContainer" targetElement="BPMNShape_ExclusiveGateway_7">
+        <di:waypoint x="375" y="220" />
+        <di:waypoint x="415" y="220" />
+        <bpmndi:BPMNLabel id="BPMNLabel_10" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3"
         sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_TravelUK">
-        <di:waypoint xsi:type="dc:Point" x="330.0" y="256.0" />
-        <di:waypoint xsi:type="dc:Point" x="330.0" y="200.0" />
-        <di:waypoint xsi:type="dc:Point" x="380.0" y="200.0" />
-        <bpmndi:BPMNLabel id="BPMNLabel_11" labelStyle="BPMNLabelStyle_1" />
+        <di:waypoint x="920" y="195" />
+        <di:waypoint x="920" y="140" />
+        <di:waypoint x="975" y="140" />
+        <bpmndi:BPMNLabel id="BPMNLabel_11" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4"
         sourceElement="BPMNShape_TravelUK" targetElement="BPMNShape_ExclusiveGateway_2">
-        <di:waypoint xsi:type="dc:Point" x="490.0" y="200.0" />
-        <di:waypoint xsi:type="dc:Point" x="525.0" y="200.0" />
-        <di:waypoint xsi:type="dc:Point" x="525.0" y="256.0" />
-        <bpmndi:BPMNLabel id="BPMNLabel_12" labelStyle="BPMNLabelStyle_1" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="SequenceFlow_6"
-        sourceElement="BPMNShape_ExclusiveGateway_8" targetElement="BPMNShape_TakeBreakEU">
-        <di:waypoint xsi:type="dc:Point" x="1005.0" y="313.0" />
-        <di:waypoint xsi:type="dc:Point" x="1005.0" y="353.0" />
-        <di:waypoint xsi:type="dc:Point" x="943.0" y="353.0" />
-        <bpmndi:BPMNLabel id="BPMNLabel_14" labelStyle="BPMNLabelStyle_1" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_7"
-        sourceElement="BPMNShape_TakeBreakUK" targetElement="BPMNShape_ExclusiveGateway_1">
-        <di:waypoint xsi:type="dc:Point" x="380.0" y="345.0" />
-        <di:waypoint xsi:type="dc:Point" x="330.0" y="345.0" />
-        <di:waypoint xsi:type="dc:Point" x="330.0" y="306.0" />
-        <bpmndi:BPMNLabel id="BPMNLabel_15" labelStyle="BPMNLabelStyle_1" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9"
-        sourceElement="BPMNShape_ExclusiveGateway_8" targetElement="BPMNShape_2">
-        <di:waypoint xsi:type="dc:Point" x="1030.0" y="288.0" />
-        <di:waypoint xsi:type="dc:Point" x="1070.0" y="288.0" />
-        <di:waypoint xsi:type="dc:Point" x="1110.0" y="288.0" />
-        <bpmndi:BPMNLabel id="BPMNLabel_27" labelStyle="BPMNLabelStyle_1" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5"
-        sourceElement="BPMNShape_TravelEU" targetElement="BPMNShape_ExclusiveGateway_8">
-        <di:waypoint xsi:type="dc:Point" x="920.0" y="216.0" />
-        <di:waypoint xsi:type="dc:Point" x="1005.0" y="216.0" />
-        <di:waypoint xsi:type="dc:Point" x="1005.0" y="263.0" />
-        <bpmndi:BPMNLabel id="BPMNLabel_36" labelStyle="BPMNLabelStyle_1" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="SequenceFlow_8"
-        sourceElement="BPMNShape_TakeBreakEU" targetElement="BPMNShape_ExclusiveGateway_7">
-        <di:waypoint xsi:type="dc:Point" x="833.0" y="353.0" />
-        <di:waypoint xsi:type="dc:Point" x="765.0" y="353.0" />
-        <di:waypoint xsi:type="dc:Point" x="765.0" y="306.0" />
-        <bpmndi:BPMNLabel id="BPMNLabel_37" labelStyle="BPMNLabelStyle_1" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_10"
-        sourceElement="BPMNShape_ExclusiveGateway_7" targetElement="BPMNShape_TravelEU">
-        <di:waypoint xsi:type="dc:Point" x="765.0" y="256.0" />
-        <di:waypoint xsi:type="dc:Point" x="765.0" y="216.0" />
-        <di:waypoint xsi:type="dc:Point" x="810.0" y="216.0" />
-        <bpmndi:BPMNLabel id="BPMNLabel_38" labelStyle="BPMNLabelStyle_1" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_11"
-        sourceElement="BPMNShape_TakeChannelTunnel" targetElement="BPMNShape_ExclusiveGateway_7">
-        <di:waypoint xsi:type="dc:Point" x="700.0" y="281.0" />
-        <di:waypoint xsi:type="dc:Point" x="720.0" y="281.0" />
-        <di:waypoint xsi:type="dc:Point" x="740.0" y="281.0" />
-        <bpmndi:BPMNLabel id="BPMNLabel_39" labelStyle="BPMNLabelStyle_1" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12"
-        sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_TakeChannelTunnel">
-        <di:waypoint xsi:type="dc:Point" x="550.0" y="281.0" />
-        <di:waypoint xsi:type="dc:Point" x="570.0" y="281.0" />
-        <di:waypoint xsi:type="dc:Point" x="590.0" y="281.0" />
-        <bpmndi:BPMNLabel id="BPMNLabel_40" labelStyle="BPMNLabelStyle_1" />
+        <di:waypoint x="1085" y="140" />
+        <di:waypoint x="1150" y="140" />
+        <di:waypoint x="1150" y="195" />
+        <bpmndi:BPMNLabel id="BPMNLabel_12" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_13" bpmnElement="SequenceFlow_13"
         sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_TakeBreakUK">
-        <di:waypoint xsi:type="dc:Point" x="525.0" y="306.0" />
-        <di:waypoint xsi:type="dc:Point" x="525.0" y="345.0" />
-        <di:waypoint xsi:type="dc:Point" x="490.0" y="345.0" />
-        <bpmndi:BPMNLabel id="BPMNLabel_41" labelStyle="BPMNLabelStyle_1" />
+        <di:waypoint x="1150" y="245" />
+        <di:waypoint x="1150" y="294" />
+        <di:waypoint x="1085" y="294" />
+        <bpmndi:BPMNLabel id="BPMNLabel_41">
+          <dc:Bounds x="1389" y="309" width="89" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_7"
+        sourceElement="BPMNShape_TakeBreakUK" targetElement="BPMNShape_ExclusiveGateway_1">
+        <di:waypoint x="975" y="303" />
+        <di:waypoint x="920" y="303" />
+        <di:waypoint x="920" y="245" />
+        <bpmndi:BPMNLabel id="BPMNLabel_15" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_11"
+        sourceElement="BPMNShape_TakeChannelTunnel" targetElement="BPMNShape_ExclusiveGateway_1">
+        <di:waypoint x="835" y="220" />
+        <di:waypoint x="895" y="220" />
+        <bpmndi:BPMNLabel id="BPMNLabel_39" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9"
+        sourceElement="BPMNShape_ExclusiveGateway_8">
+        <di:waypoint x="675" y="220" />
+        <di:waypoint x="725" y="220" />
+        <bpmndi:BPMNLabel id="BPMNLabel_27">
+          <dc:Bounds x="849" y="248" width="89" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_10"
+        sourceElement="BPMNShape_ExclusiveGateway_7" targetElement="BPMNShape_TravelEU">
+        <di:waypoint x="440" y="195" />
+        <di:waypoint x="440" y="140" />
+        <di:waypoint x="495" y="140" />
+        <bpmndi:BPMNLabel id="BPMNLabel_38" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5"
+        sourceElement="BPMNShape_TravelEU" targetElement="BPMNShape_ExclusiveGateway_8">
+        <di:waypoint x="605" y="140" />
+        <di:waypoint x="650" y="140" />
+        <di:waypoint x="650" y="195" />
+        <bpmndi:BPMNLabel id="BPMNLabel_36" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="SequenceFlow_6"
+        sourceElement="BPMNShape_ExclusiveGateway_8" targetElement="BPMNShape_TakeBreakEU">
+        <di:waypoint x="650" y="245" />
+        <di:waypoint x="650" y="303" />
+        <di:waypoint x="605" y="303" />
+        <bpmndi:BPMNLabel id="BPMNLabel_14">
+          <dc:Bounds x="755" y="375" width="89" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="SequenceFlow_8"
+        sourceElement="BPMNShape_TakeBreakEU" targetElement="BPMNShape_ExclusiveGateway_7">
+        <di:waypoint x="495" y="303" />
+        <di:waypoint x="440" y="303" />
+        <di:waypoint x="440" y="245" />
+        <bpmndi:BPMNLabel id="BPMNLabel_37" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
     <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_1">
-      <dc:Font name="arial" size="9.0" />
+      <dc:Font name="arial" size="9" />
     </bpmndi:BPMNLabelStyle>
   </bpmndi:BPMNDiagram>
 </bpmn2:definitions>

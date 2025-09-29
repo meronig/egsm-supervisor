@@ -14,5 +14,5 @@ DBCONFIG.initDatabaseConnection(CONNCONFIG.getConfig().database_host, CONNCONFIG
     CONNCONFIG.getConfig().database_access_key_id, CONNCONFIG.getConfig().database_secret_access_key)
 
 DBCONFIG.initTables().then(()=>{
-    LOG.logSystem('DEBUG', 'Tables has been initialized', module.id)
+    LOG.logSystem('DEBUG', 'Tables have been initialized', module.id)
 })

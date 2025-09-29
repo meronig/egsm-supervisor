@@ -14,6 +14,6 @@ DBCONFIG.initDatabaseConnection(CONNCONFIG.getConfig().database_host, CONNCONFIG
     CONNCONFIG.getConfig().database_access_key_id, CONNCONFIG.getConfig().database_secret_access_key)
 
 DBCONFIG.deleteTables().then(()=>{
-    LOG.logSystem('DEBUG', 'Tables has been deleted', module.id)
+    LOG.logSystem('DEBUG', 'Tables have been deleted', module.id)
 })
 //LIBRARY.exportProcessLibraryToDatabase()

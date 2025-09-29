@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process-type>
+    <name>AMS-CDG</name>
+    <description>AMS-CDG process from the SMARTifact research</description>
+
+    <bpmn-model>
+        <model>models/process.bpmn</model>
+    </bpmn-model>
+
+    <perspective>
+        <name>Truck</name>
+        <bpmn-model>models/bpmn_truck.bpmn</bpmn-model>
+        <egsm-model>models/egsm_truck.xml</egsm-model>
+        <info-model>models/info_truck.xsd</info-model>
+        <bindings>models/binding_truck.xml</bindings>
+    </perspective>
+</process-type>

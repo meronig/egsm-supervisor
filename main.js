@@ -1,4 +1,3 @@
-
 var fs = require('fs');
 var xml2js = require('xml2js');
 
@@ -14,20 +13,27 @@ const { Broker } = require('./modules/egsm-common/auxiliary/primitives');
 const CONFIG_FILE = './config.xml'
 module.id = "MAIN"
 
-LOG.logSystem('DEBUG', 'Application started...', module.id)
+async function startSupervisor() {
+    LOG.logSystem('DEBUG', 'Application started...', module.id)
 
-var filecontent = fs.readFileSync(CONFIG_FILE, 'utf8')
+    var filecontent = fs.readFileSync(CONFIG_FILE, 'utf8')
 
-CONNCONFIG.applyConfig(filecontent)
+    CONNCONFIG.applyConfig(filecontent)
 
-DBCONFIG.initDatabaseConnection(CONNCONFIG.getConfig().database_host, CONNCONFIG.getConfig().database_port, CONNCONFIG.getConfig().database_region,
-    CONNCONFIG.getConfig().database_access_key_id, CONNCONFIG.getConfig().database_secret_access_key)
+    DBCONFIG.initDatabaseConnection(CONNCONFIG.getConfig().database_host, CONNCONFIG.getConfig().database_port, CONNCONFIG.getConfig().database_region,
+        CONNCONFIG.getConfig().database_access_key_id, CONNCONFIG.getConfig().database_secret_access_key)
 
-MQTTCOMM.initBrokerConnection(CONNCONFIG.getConfig().primary_broker)
+    await MQTTCOMM.initBrokerConnection(CONNCONFIG.getConfig().primary_broker)
 
-LIBRARY.exportProcessLibraryToDatabase()
+    LIBRARY.exportProcessLibraryToDatabase()
 
-process.on('SIGINT', () => {
-    LOG.logSystem('DEBUG', 'SIGINT signal caught. Shutting down supervisor...', module.id)
-    process.exit()
-});
+    process.on('SIGINT', () => {
+        LOG.logSystem('DEBUG', 'SIGINT signal caught. Shutting down supervisor...', module.id)
+        process.exit()
+    });
+}
+
+startSupervisor().catch(error => {
+    LOG.logSystem('ERROR', `Failed to start supervisor: ${error}`, module.id)
+    process.exit(1)
+})

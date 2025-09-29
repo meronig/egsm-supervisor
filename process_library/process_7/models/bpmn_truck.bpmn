@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ext="http://org.eclipse.bpmn2/ext"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" id="Definitions_1"
+  targetNamespace="http://org.eclipse.bpmn2/default/process"
+  exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.6.1">
+  <bpmn2:process id="shipment_BRU-AMS" name="Default Process" isExecutable="false">
+    <bpmn2:startEvent id="process_started" name="process_started">
+      <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
+      <bpmn2:dataOutput id="DataOutput_3" name="output1" />
+      <bpmn2:outputSet id="OutputSet_10" name="Output Set 10">
+        <bpmn2:dataOutputRefs>DataOutput_3</bpmn2:dataOutputRefs>
+      </bpmn2:outputSet>
+      <bpmn2:messageEventDefinition id="MessageEventDefinition_1" />
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="process_started" targetRef="Load" />
+    <bpmn2:endEvent id="process_ended" name="process_ended">
+      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+      <bpmn2:dataInput id="DataInput_3" name="input1" />
+      <bpmn2:inputSet id="InputSet_10" name="Input Set 10">
+        <bpmn2:dataInputRefs>DataInput_3</bpmn2:dataInputRefs>
+      </bpmn2:inputSet>
+      <bpmn2:messageEventDefinition id="MessageEventDefinition_2" />
+    </bpmn2:endEvent>
+    <bpmn2:task id="Load" name="Load">
+      <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_6">
+        <bpmn2:dataInput id="DataInput_1" name="input1" />
+        <bpmn2:dataOutput id="DataOutput_1" name="output1" />
+        <bpmn2:inputSet id="InputSet_6" name="Input Set 6">
+          <bpmn2:dataInputRefs>DataInput_1</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_6" name="Output Set 6">
+          <bpmn2:dataOutputRefs>DataOutput_1</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+    </bpmn2:task>
+    <bpmn2:task id="Drive" name="Drive">
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_7">
+        <bpmn2:dataInput id="DataInput_2" name="input1" />
+        <bpmn2:dataInput id="DataInput_4" name="input2" />
+        <bpmn2:dataOutput id="DataOutput_2" name="output1" />
+        <bpmn2:dataOutput id="DataOutput_4" name="output2" />
+        <bpmn2:inputSet id="InputSet_7" name="Input Set 7">
+          <bpmn2:dataInputRefs>DataInput_2</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>DataInput_4</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_7" name="Output Set 7">
+          <bpmn2:dataOutputRefs>DataOutput_2</bpmn2:dataOutputRefs>
+          <bpmn2:dataOutputRefs>DataOutput_4</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+    </bpmn2:task>
+    <bpmn2:task id="Pause" name="Pause">
+      <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
+      <bpmn2:ioSpecification id="InputOutputSpecification_9">
+        <bpmn2:dataInput id="DataInput_5" name="input1" />
+        <bpmn2:dataOutput id="DataOutput_5" name="output1" />
+        <bpmn2:inputSet id="InputSet_9" name="Input Set 9">
+          <bpmn2:dataInputRefs>DataInput_5</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="OutputSet_9" name="Output Set 9">
+          <bpmn2:dataOutputRefs>DataOutput_5</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+    </bpmn2:task>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_1" gatewayDirection="Converging">
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_2" gatewayDirection="Diverging">
+      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="Load" targetRef="ExclusiveGateway_1" />
+    <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="ExclusiveGateway_1" targetRef="Drive" />
+    <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="Drive" targetRef="ExclusiveGateway_2" />
+    <bpmn2:sequenceFlow id="SequenceFlow_6" sourceRef="ExclusiveGateway_2" targetRef="Pause" />
+    <bpmn2:sequenceFlow id="SequenceFlow_7" sourceRef="Pause" targetRef="ExclusiveGateway_1" />
+    <bpmn2:sequenceFlow id="SequenceFlow_9" sourceRef="ExclusiveGateway_2" targetRef="process_ended" />
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="shipment_BRU-AMS">
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1"
+        isMarkerVisible="true">
+        <dc:Bounds x="404" y="154" width="50" height="50" />
+        <bpmndi:BPMNLabel id="BPMNLabel_8" labelStyle="BPMNLabelStyle_1" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Load" bpmnElement="Load">
+        <dc:Bounds x="245" y="154" width="110" height="50" />
+        <bpmndi:BPMNLabel id="BPMNLabel_4" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds x="284" y="170" width="32" height="17" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1" bpmnElement="process_started">
+        <dc:Bounds x="172" y="161" width="36" height="36" />
+        <bpmndi:BPMNLabel id="BPMNLabel_1" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds x="151" y="197" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Drive" bpmnElement="Drive">
+        <dc:Bounds x="495" y="85" width="110" height="50" />
+        <bpmndi:BPMNLabel id="BPMNLabel_5" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds x="533" y="101" width="34" height="17" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Pause" bpmnElement="Pause">
+        <dc:Bounds x="495" y="235" width="110" height="50" />
+        <bpmndi:BPMNLabel id="BPMNLabel_7" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds x="529" y="251" width="42" height="17" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_2" bpmnElement="ExclusiveGateway_2"
+        isMarkerVisible="true">
+        <dc:Bounds x="645" y="154" width="50" height="50" />
+        <bpmndi:BPMNLabel id="BPMNLabel_9" labelStyle="BPMNLabelStyle_1" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_2" bpmnElement="process_ended">
+        <dc:Bounds x="782" y="161" width="36" height="36" />
+        <bpmndi:BPMNLabel id="BPMNLabel_3" labelStyle="BPMNLabelStyle_1">
+          <dc:Bounds x="762" y="197" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1"
+        sourceElement="BPMNShape_1" targetElement="BPMNShape_Load">
+        <di:waypoint x="208" y="179" />
+        <di:waypoint x="245" y="179" />
+        <bpmndi:BPMNLabel id="BPMNLabel_2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9"
+        sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_2">
+        <di:waypoint x="695" y="179" />
+        <di:waypoint x="782" y="179" />
+        <bpmndi:BPMNLabel id="BPMNLabel_27">
+          <dc:Bounds x="645" y="281" width="77" height="85" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2"
+        sourceElement="BPMNShape_Load" targetElement="BPMNShape_ExclusiveGateway_1">
+        <di:waypoint x="355" y="179" />
+        <di:waypoint x="404" y="179" />
+        <bpmndi:BPMNLabel id="BPMNLabel_10" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3"
+        sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_Drive">
+        <di:waypoint x="429" y="154" />
+        <di:waypoint x="429" y="110" />
+        <di:waypoint x="495" y="110" />
+        <bpmndi:BPMNLabel id="BPMNLabel_11" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4"
+        sourceElement="BPMNShape_Drive" targetElement="BPMNShape_ExclusiveGateway_2">
+        <di:waypoint x="605" y="110" />
+        <di:waypoint x="670" y="110" />
+        <di:waypoint x="670" y="154" />
+        <bpmndi:BPMNLabel id="BPMNLabel_12" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="SequenceFlow_6"
+        sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_Pause">
+        <di:waypoint x="670" y="204" />
+        <di:waypoint x="670" y="260" />
+        <di:waypoint x="605" y="260" />
+        <bpmndi:BPMNLabel id="BPMNLabel_14">
+          <dc:Bounds x="502" y="373" width="77" height="85" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_7"
+        sourceElement="BPMNShape_Pause" targetElement="BPMNShape_ExclusiveGateway_1">
+        <di:waypoint x="495" y="260" />
+        <di:waypoint x="429" y="260" />
+        <di:waypoint x="429" y="204" />
+        <bpmndi:BPMNLabel id="BPMNLabel_15" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+    <bpmndi:BPMNLabelStyle id="BPMNLabelStyle_1">
+      <dc:Font name="arial" size="9" />
+    </bpmndi:BPMNLabelStyle>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

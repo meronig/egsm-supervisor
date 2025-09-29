@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+<xs:element name="Truck">
+<xs:complexType>
+<xs:attribute name="timestamp" type="xs:dateTime" use="required"/>
+<xs:attribute name="status" type="xs:string" use="optional"/>
+</xs:complexType>
+</xs:element>
+<xs:element name="process_ended">
+<xs:complexType>
+<xs:attribute name="timestamp" type="xs:dateTime" use="required"/>
+</xs:complexType>
+</xs:element>
+<xs:element name="process_started">
+<xs:complexType>
+<xs:attribute name="timestamp" type="xs:dateTime" use="required"/>
+</xs:complexType>
+</xs:element>
+</xs:schema>
