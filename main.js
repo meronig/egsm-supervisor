@@ -10,7 +10,7 @@ var DBCONFIG = require('./modules/egsm-common/database/databaseconfig');
 var CONNCONFIG = require('./modules/egsm-common/config/connectionconfig');
 const { Broker } = require('./modules/egsm-common/auxiliary/primitives');
 
-const CONFIG_FILE = './config.xml'
+const CONFIG_FILE = './config/config.xml'
 module.id = "MAIN"
 
 async function startSupervisor() {

@@ -4,7 +4,7 @@ var DBCONFIG = require('./modules/egsm-common/database/databaseconfig');
 var CONNCONFIG = require('./modules/egsm-common/config/connectionconfig');
 
 module.id = 'MAIN'
-const CONFIG_FILE = './config.xml'
+const CONFIG_FILE = './config/config.xml'
 
 var filecontent = fs.readFileSync(CONFIG_FILE, 'utf8')
 
